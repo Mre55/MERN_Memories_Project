@@ -1,4 +1,7 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { deletePost } from "../../../actions/posts";
+
 import {
   Card,
   CardActions,
@@ -16,6 +19,7 @@ import useStyles from "./styles";
 
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   return (
     <Card className={classes.card}>
@@ -61,7 +65,7 @@ const Post = ({ post, setCurrentId }) => {
         <Button size="small" color="primary">
           <ThumbUpAltIcon fontSize="small" /> Like{" "}
         </Button>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
           <DeleteIcon fontSize="small" /> Delete
         </Button>
       </CardActions>
