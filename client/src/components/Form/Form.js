@@ -21,8 +21,7 @@ const Form = () => {
     e.preventDefault();
     dispatch(createPost(postData));
   };
-  
-  const handleChange = () => {};
+
   const clear = () => {};
 
   return (
@@ -73,9 +72,9 @@ const Form = () => {
         <div className={classes.fileInput}>
           <FileBase
             type="file"
-            mutiple={false}
+            multiple={false}
             onDone={({ base64 }) =>
-              setPostData({ ...postData, selectFile: base64 })
+              setPostData({ ...postData, selectedFile: base64 })
             }
           />
         </div>

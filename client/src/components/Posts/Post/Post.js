@@ -21,10 +21,7 @@ const Post = ({ post, setCurrentId }) => {
     <Card className={classes.card}>
       <CardMedia
         className={classes.media}
-        image={
-          post.selectedFile ||
-          "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
-        }
+        image={post.selectedFile || "https://picsum.photos/200"}
         title={post.title}
       />
       <div className={classes.overlay}>
