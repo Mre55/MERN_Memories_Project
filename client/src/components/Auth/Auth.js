@@ -7,7 +7,8 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
-import { GoogleLogin } from "react-google-login";
+// import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import Input from "./Input";
@@ -31,13 +32,24 @@ const Auth = () => {
     handleShowPassword(false);
   };
 
-  const googleSuccess = async (res) => {
-    console.log(res);
-  }
+  const login = useGoogleLogin({
 
-  const googleFailure = () => {
-    console.log("Google Sign In was unsuccessful. Try Again Later.")
-  }
+    onSuccess: (credentialResponse) => {
+      console.log(credentialResponse);
+    },
+
+    onError: () => {
+      console.log("Login Failed");
+    }
+  });
+
+  // const googleSuccess = async (credentialResponse) => {
+  //   console.log("credentialResponse is ", credentialResponse);
+  // };
+
+  // const googleFailure = () => {
+  //   console.log("Google Sign In was unsuccessful. Try Again Later.");
+  // };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -96,25 +108,37 @@ const Auth = () => {
             >
               {isSignUp ? "Sign Up" : "Sign In"}
             </Button>
-            <GoogleLogin
-              clientId="746156248339-st0kt8sq9e6etanq7onuvtdi1ebdvg6r.apps.googleusercontent.com"
-              render={(renderProps) => (
-                <Button
-                  className={classes.googleButton}
-                  color="primary"
-                  fullWidth
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                  startIcon={<Icon />}
-                  variant="contained"
-                >
-                  Google Sign In
-                </Button>
-              )}
+            {/* <GoogleLogin
               onSuccess={googleSuccess}
-              onFailure={googleFailure}
+              onError={googleFailure}
               cookiePolicy="single_host_origin"
-            />
+            /> */}
+            <Button
+              className={classes.googleButton}
+              color="primary"
+              fullWidth
+              startIcon={<Icon />}
+              variant="contained"
+              onClick={() => login()}
+            >
+              Google Sign In
+            </Button>
+            {/* <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            /> */}
+            {/* <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            /> */}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Button onClick={switchMode}>
