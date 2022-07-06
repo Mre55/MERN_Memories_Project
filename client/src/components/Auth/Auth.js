@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 // import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useDispatch } from "react-redux";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import Input from "./Input";
@@ -31,11 +32,14 @@ const Auth = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp);
     handleShowPassword(false);
   };
+  const dispatch = useDispatch();
 
   const login = useGoogleLogin({
 
     onSuccess: (credentialResponse) => {
       console.log(credentialResponse);
+      const accessToken = credentialResponse.access_token;
+      dispatch({ type: "AUTH", data: accessToken });
     },
 
     onError: () => {
