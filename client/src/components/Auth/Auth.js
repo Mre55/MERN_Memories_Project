@@ -11,29 +11,52 @@ import {
 // import { GoogleLogin } from "@react-oauth/google";
 // import { GoogleOAuthProvider } from "@react-oauth/google";
 
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { signup, signin } from "../../actions/auth";
 import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import Input from "./Input";
 import Icon from "./icon";
 
 import useStyles from "./styles";
 
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
 const Auth = () => {
   const classes = useStyles();
 
+  const [formData, setFormData] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(isSignUp) {
+      dispatch(signup(formData, history));
+    } else {
+      dispatch(signup(formData, history));
+    }
+  };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
   const switchMode = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp);
     handleShowPassword(false);
   };
 
-  // const dispatch = useDispatch();
 
   // const googleSuccess = async (res) => {
   //   console.log("res is ", res);
