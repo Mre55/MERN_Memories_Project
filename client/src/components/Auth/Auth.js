@@ -7,9 +7,9 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
-// import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleLogin } from "@react-oauth/google";
-import { useDispatch } from "react-redux";
+
+import { GoogleLogin } from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import Input from "./Input";
@@ -32,28 +32,16 @@ const Auth = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp);
     handleShowPassword(false);
   };
-  const dispatch = useDispatch();
 
-  const login = useGoogleLogin({
+  // const dispatch = useDispatch();
 
-    onSuccess: (credentialResponse) => {
-      console.log(credentialResponse);
-      const accessToken = credentialResponse.access_token;
-      dispatch({ type: "AUTH", data: accessToken });
-    },
+  const googleSuccess = async (res) => {
+    console.log("res is ", res);
+  };
 
-    onError: () => {
-      console.log("Login Failed");
-    }
-  });
-
-  // const googleSuccess = async (credentialResponse) => {
-  //   console.log("credentialResponse is ", credentialResponse);
-  // };
-
-  // const googleFailure = () => {
-  //   console.log("Google Sign In was unsuccessful. Try Again Later.");
-  // };
+  const googleFailure = () => {
+    console.log("Google Sign In was unsuccessful. Try Again Later.");
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -112,37 +100,27 @@ const Auth = () => {
             >
               {isSignUp ? "Sign Up" : "Sign In"}
             </Button>
-            {/* <GoogleLogin
-              onSuccess={googleSuccess}
-              onError={googleFailure}
-              cookiePolicy="single_host_origin"
-            /> */}
-            <Button
-              className={classes.googleButton}
-              color="primary"
-              fullWidth
-              startIcon={<Icon />}
-              variant="contained"
-              onClick={() => login()}
-            >
-              Google Sign In
-            </Button>
-            {/* <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                console.log(credentialResponse);
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            /> */}
-            {/* <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                console.log(credentialResponse);
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            /> */}
+            <GoogleOAuthProvider>
+              <GoogleLogin
+                client_id="559698675513-og06v37mmv3mf6ki7enlqnihgt48c7cp.apps.googleusercontent.com"
+                render={(renderProps) => (
+                  <Button
+                    className={classes.googleButton}
+                    color="primary"
+                    fullWidth
+                    variant="contained"
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                    startIcon={<Icon />}
+                  >
+                    Google Sign In
+                  </Button>
+                )}
+                onSuccess={googleSuccess}
+                onError={googleFailure}
+                cookiePolicy="single_host_origin"
+              />
+            </GoogleOAuthProvider>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Button onClick={switchMode}>
